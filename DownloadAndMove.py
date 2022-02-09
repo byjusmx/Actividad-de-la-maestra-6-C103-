@@ -8,8 +8,8 @@ import shutil
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-from_dir = "C:/Users/preet/Downloads"              # Add the path of you "Downloads" folder.
-to_dir = "C:/Users/preet/Desktop/Downloaded_Files" #Create "Document_Files" folder in your Desktop and update the path accordingly.
+from_dir = "C:/Users/preet/Downloads"              # Agrega la ruta a tu carpeta "Descargas".
+to_dir = "C:/Users/preet/Desktop/Downloaded_Files" #Crea la carpeta "Document_Files" en tu escritorio y actualiza la ruta correspondiente.
 
 
 
@@ -20,7 +20,7 @@ dir_tree = {
     "Setup_Files": ['.exe', '.bin', '.cmd', '.msi', '.dmg']
 }
 
-# Event Hanlder Class
+# Clase event handler
 
 class FileMovementHandler(FileSystemEventHandler):
 
@@ -36,7 +36,7 @@ class FileMovementHandler(FileSystemEventHandler):
 
                 file_name = os.path.basename(event.src_path)
 
-                print("Downloaded " + file_name)
+                print("Descargado " + file_name)
 
                 path1 = from_dir + '/' + file_name
                 path2 = to_dir + '/' + key
@@ -45,52 +45,52 @@ class FileMovementHandler(FileSystemEventHandler):
                 time.sleep(1)
                 if os.path.exists(path2):
 
-                    print("Directory Exists...")
+                    print("El directorio Existe...")
                     time.sleep(1)
                                         
                     if os.path.exists(path3):
 
-                        print("File Already Exists in " + key + "....")
-                        print("Renaming File " + file_name + "....")
+                        print("El archivo ya existe en " + key + "....")
+                        print("Renombrando archivo " + file_name + "....")
 
                         new_file_name = os.path.splitext(file_name)[0] + str(random.randint(0, 999)) + os.path.splitext(file_name)[1]
 
                         path4 = to_dir + '/' + key + '/' + new_file_name
 
-                        print("Moving " + new_file_name + "....")
+                        print("Moviendo " + new_file_name + "....")
                         shutil.move(path1, path4)
                         time.sleep(1)
 
                     else:
-                        print("Moving " + file_name + "....")
+                        print("Moviendo " + file_name + "....")
                         shutil.move(path1, path3)
                         time.sleep(1)
 
                 else:
-                    print("Making Directory...")
+                    print("Creando Directorio...")
                     os.makedirs(path2)
-                    print("Moving " + file_name + "....")
+                    print("Moviendo " + file_name + "....")
                     shutil.move(path1, path3)
                     time.sleep(1)
 
 
-# Initialize Event Handler Class
+# Inicia la clase event handler
 event_handler = FileMovementHandler()
 
-# Initialize Observer
+# Inicia Observer
 observer = Observer()
 
-# Schedule the Observer
+# Programa Observer
 observer.schedule(event_handler, from_dir, recursive=True)
 
-# Start the Observer
+# Inicia Observer
 observer.start()
 
 try:
     while True:
         time.sleep(2)
-        print("running...")
+        print("ejecutando...")
 except KeyboardInterrupt:
-    print("stopped")
+    print("detenido")
     observer.stop()
 
